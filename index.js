@@ -14,9 +14,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const mongoose = require('mongoose');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
-
+const User = require('./models/user');
 const app = express();
+
+// const mongoConnect = require('./util/database').mongoConnect;
 
 // Route setup. You can implement more in the future!
 const ta01Routes = require('./routes/ta01');
@@ -51,7 +54,22 @@ app.use(express.static(path.join(__dirname, 'public')))
      res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});
     })
    .use((req, res, next) => {
+      User.findById('5bab316ce0a7c75f783cb8a8')
+        .then(user => {
+          req.user = user;
+          next();
+        })
+        .catch(err => console.log(err));
+    })
+   .use((req, res, next) => {
      // 404 page
      res.render('pages/404', {title: '404 - Page Not Found', path: req.url})
    })
    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+
+   mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test?retryWrites=true&w=majority').then(result => {
+     app.listen(3000);
+   }).catch(err => {
+     console.log(err);
+   })
