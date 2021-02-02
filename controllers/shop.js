@@ -50,9 +50,9 @@ exports.getCart = (req, res, next) => {
     .then(user => {
       const products = user.cart.items;
       res.render('shop/cart', {
-        path: '/cart',
+        path: '/shop/cart',
         pageTitle: 'Your Cart',
-        products: products
+        products: products,
       });
     })
     .catch(err => console.log(err));
@@ -66,7 +66,7 @@ exports.postCart = (req, res, next) => {
     })
     .then(result => {
       console.log(result);
-      res.redirect('/cart');
+      res.redirect('/shop/cart');
     });
 };
 
