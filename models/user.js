@@ -29,13 +29,15 @@ userSchema.methods.addToCart = function(product) {
   const cartProductIndex = this.cart.items.findIndex(cp => {
     return cp.productId.toString() === product._id.toString();
   });
-  let newQuantity = 1;
+  let newQuantity = 1;    //This would leave some great opportunities
   const updatedCartItems = [...this.cart.items];
 
+  // Do we already have quantity of this kind?
   if (cartProductIndex >= 0) {
     newQuantity = this.cart.items[cartProductIndex].quantity + 1;
     updatedCartItems[cartProductIndex].quantity = newQuantity;
   } else {
+    // Add the item for the first 
     updatedCartItems.push({
       productId: product._id,
       quantity: newQuantity
