@@ -21,6 +21,16 @@ const app = express();
 
 // const mongoConnect = require('./util/database').mongoConnect;
 
+app.use((req, res, next) => {
+  User.findById('6018b37b62eced21198652e6')
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
+});
+
+
 // Route setup. You can implement more in the future!
 const ta01Routes = require('./routes/ta01');
 const ta02Routes = require('./routes/ta02');
