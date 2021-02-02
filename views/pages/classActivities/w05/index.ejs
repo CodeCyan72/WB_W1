@@ -1,0 +1,21 @@
+<% include ../../../includes/header.ejs %>
+<title><%= title %></title>
+</head>
+<body>
+   <% include ../../../includes/nav.ejs %>
+   <div class="container">
+      <h1>Week 5 Class Activity</h1>
+      <h3>Working with Cookies</h3>
+      <button class="btn btn-default"><a href="/classActivities/05/setuser/">Set Cookie</a></button>
+      <button class="btn btn-default"><a href="/classActivities/05/getuser/">View Cookie</a></button>
+      <h3>Sessions and Authentication</h3>
+      <% if (customer) { %>
+         <h2>Welcome <%= customer.email %></h2>
+         <button class="btn btn-default"><a href="/classActivities/05/signout/">Sign Out</a></button>
+      <% } else {%>
+         <button class="btn btn-default"><a href="/classActivities/05/signup/">Sign Up</a></button>
+         <button class="btn btn-default"><a href="/classActivities/05/login/">Login</a></button>
+      <% } %>
+      <!-- <button class="btn btn-default"><a href="05/getuser/">View Cookie</a></button> -->
+   </div>
+</body>

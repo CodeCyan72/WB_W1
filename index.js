@@ -17,6 +17,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
 const User = require('./models/user');
+const Customer = require('./models/customer');
 const app = express();
 
 // const mongoConnect = require('./util/database').mongoConnect;
@@ -38,18 +39,14 @@ const ta03Routes = require('./routes/ta03');
 const ta04Routes = require('./routes/ta04'); 
 const prove01Routes = require('./routes/prove01'); 
 const prove02Routes = require('./routes/prove02'); 
+const week05 = require('./routes/w05Class'); 
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 app.use(express.static(path.join(__dirname, 'public')))
-   .set('views', path.join(__dirname, 'views'))
-   .set('view engine', 'ejs')
-   // For view engine as Pug
-   //.set('view engine', 'pug') // For view engine as PUG. 
-   // For view engine as hbs (Handlebars)
-   //.engine('hbs', expressHbs({layoutsDir: 'views/layouts/', defaultLayout: 'main-layout', extname: 'hbs'})) // For handlebars
-   //.set('view engine', 'hbs')
+   .set('views', path.join(__dirname, 'views'))   // All renders start from the views folder
+   .set('view engine', 'ejs')                     // Allows us to ommit .ejs in res.render
    .use(bodyParser.urlencoded({extended: false})) // For parsing the body of a POST
    .use('/ta01', ta01Routes)
    .use('/ta02', ta02Routes) 
@@ -59,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')))
    .use('/prove02', prove02Routes)
    .use('/admin', adminRoutes)
    .use('/shop', shopRoutes)
+   .use('/classActivities/05', week05)
    .get('/', (req, res, next) => {
      // This is the primary index, always handled last. 
      res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});
@@ -71,6 +69,14 @@ app.use(express.static(path.join(__dirname, 'public')))
         })
         .catch(err => console.log(err));
     })
+    // .use((req, res, next) => {
+    //   Customer.findById('60197b8150f49825e961c531')
+    //     .then(customer => {
+    //       req.session.customer = customer;
+    //       next();
+    //     })
+    //     .catch(err => console.log(err));
+    // })
    .use((req, res, next) => {
      // 404 page
      res.render('pages/404', {title: '404 - Page Not Found', path: req.url})
@@ -78,7 +84,9 @@ app.use(express.static(path.join(__dirname, 'public')))
    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
-   mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test?retryWrites=true&w=majority').then(result => {
+   mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test?retryWrites=true&w=majority')
+   .then(result => {
+     
      app.listen(3000);
    }).catch(err => {
      console.log(err);

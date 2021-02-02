@@ -1,0 +1,25 @@
+<% include ../../../includes/header.ejs %>
+<title><%= title %></title>
+</head>
+<body>
+   <% include ../../../includes/nav.ejs %>
+   <div class="container">
+      <h1>Week 5 Class Activity - Sign Up</h1>
+      <form action="/<%=path%>/signup" class="login-form" method="POST">
+         <div>
+            <label for="email">Email</label>
+            <input class="form-control" type="email" name="email">
+         </div>
+         <div>
+            <label for="password">Password</label>
+            <input class="form-control" type="password" name="password">
+         </div>
+         <div>
+            <label for="password">Confirm Password</label>
+            <input class="form-control" type="password" name="confirmPassword">
+         </div>
+         <br>
+         <button type="submit" class="btn btn-success">Login</button>
+      </form>
+   </div>
+</body>
