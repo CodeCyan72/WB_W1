@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../includes/header.ejs %>
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+    <div class="jumbotron text-center">
+      <div class="container">
+        <h1>
+          <%= title %>
+        </h1>
+      </div>
+    </div>
+    <div class="container" style="<%= style %>">
+      <form action="/change-style" method="POST">
+        <label>Change color</label>
+        <input type="text" name="style">
+        <button type="submit">Submit</button>
+      </form>
+      <h1>Counter Value: <%= counter %></h1>
+      <form action="/counter" method="POST">
+        <input type="hidden" name="change" value=1>
+        <button type="submit">Increment number</button>
+      </form>
+      <form action="/counter" method="POST">
+        <input type="hidden" name="change" value=-1>
+        <button type="submit">Decrement counter</button>
+      </form>
+      <form action="/reset" method="POST">
+        <button type="submit">Reset Session</button>
+      </form>
+    </div>
+</body>
+
+</html>
