@@ -32,6 +32,9 @@
             <li class="main-header__item">
                 <a class="<%= path === '/auth/login' ? 'active' : '' %>" href="/auth/login">Login</a>
             </li>
+            <li class="main-header__item">
+                <a class="<%= path === '/auth/signup' ? 'active' : '' %>" href="/auth/signup">Sign Up</a>
+            </li>
             <% } else { %>
             <li class="main-header__item">
                 <form action="/auth/logout" method="post"><button type="submit">Logout</button></form>

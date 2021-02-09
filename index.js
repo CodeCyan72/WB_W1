@@ -103,18 +103,18 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test?retryWrites=true&w=majority')
   .then(result => {
-    User.findOne().then(user => {
-      if (!user) {
-        const user = new User({
-          name: 'Paul',
-          email: 'paul@shop.com',
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    });
+    // User.findOne().then(user => {
+    //   if (!user) {
+    //     const user = new User({
+    //       name: 'Paul',
+    //       email: 'paul@shop.com',
+    //       cart: {
+    //         items: []
+    //       }
+    //     });
+    //     user.save();
+    //   }
+    // });
     app.listen(3000);
   }).catch(err => {
     console.log(err);
