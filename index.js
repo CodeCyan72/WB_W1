@@ -18,9 +18,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
+const csrf = require('csurf');    //Help prevent stolen sessions
 const User = require('./models/user');
-const Customer = require('./models/customer');
+// const Customer = require('./models/customer');
 const app = express();
+
+const flash = require('connect-flash');
 
 MONGODB_URI = 'mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test';
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -30,6 +33,8 @@ const store = new MongoDBStore({
 });
 
 // const mongoConnect = require('./util/database').mongoConnect;
+
+const csrfProtection = csrf();
 
 app.use((req, res, next) => {
   User.findById('6018b37b62eced21198652e6')
@@ -60,6 +65,13 @@ app.use(express.static(path.join(__dirname, 'public')))
   .set('view engine', 'ejs')                     // Allows us to ommit .ejs in res.render
   .use(bodyParser.urlencoded({ extended: false })) // For parsing the body of a POST
   .use(session({ secret: "thisIsAPassword", resave: false, saveUninitialized: false, store: store}))
+  .use(csrfProtection)
+  .use((req, res, next) => {
+    res.isAthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+  })
+  .use(flash())
   .use('/ta01', ta01Routes)
   .use('/ta02', ta02Routes)
   .use('/ta03', ta03Routes)
@@ -86,14 +98,6 @@ app.use(express.static(path.join(__dirname, 'public')))
       })
       .catch(err => console.log(err));
   })
-  // .use((req, res, next) => {
-  //   Customer.findById('60197b8150f49825e961c531')
-  //     .then(customer => {
-  //       req.session.customer = customer;
-  //       next();
-  //     })
-  //     .catch(err => console.log(err));
-  // })
   .use((req, res, next) => {
     // 404 page
     res.render('pages/404', { title: '404 - Page Not Found', path: req.url })
