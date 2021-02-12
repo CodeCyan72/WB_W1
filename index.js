@@ -67,26 +67,11 @@ app.use(express.static(path.join(__dirname, 'public')))
   .use(session({ secret: "thisIsAPassword", resave: false, saveUninitialized: false, store: store}))
   .use(csrfProtection)
   .use((req, res, next) => {
-    res.isAthenticated = req.session.isLoggedIn;
+    res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
     next();
   })
   .use(flash())
-  .use('/ta01', ta01Routes)
-  .use('/ta02', ta02Routes)
-  .use('/ta03', ta03Routes)
-  .use('/ta04', ta04Routes)
-  .use('/prove01', prove01Routes)
-  .use('/prove02', prove02Routes)
-  .use('/admin', adminRoutes)
-  .use('/shop', shopRoutes)
-  .use('/classActivities/05', week05)
-  .use('/ta', ta)
-  .use('/auth', authRoutes)
-  .get('/', (req, res, next) => {
-    // This is the primary index, always handled last. 
-    res.render('pages/index', { title: 'Welcome to my CSE341 repo', path: '/' });
-  })
   .use((req, res, next) => {
     if (!req.session.user) {
       return next();
@@ -98,6 +83,21 @@ app.use(express.static(path.join(__dirname, 'public')))
       })
       .catch(err => console.log(err));
   })
+  .use('/ta01', ta01Routes)
+  .use('/ta02', ta02Routes)
+  .use('/ta03', ta03Routes)
+  .use('/ta04', ta04Routes)
+  .use('/prove01', prove01Routes)
+  .use('/prove02', prove02Routes)
+  .use('/admin', adminRoutes)
+  .use('/classActivities/05', week05)
+  .use('/ta', ta)
+  .use('/auth', authRoutes)
+  .get('/', (req, res, next) => {
+    // This is the primary index, always handled last. 
+    res.render('pages/index', { title: 'Welcome to my CSE341 repo', path: '/' });
+  })
+  .use('/shop', shopRoutes)
   .use((req, res, next) => {
     // 404 page
     res.render('pages/404', { title: '404 - Page Not Found', path: req.url })

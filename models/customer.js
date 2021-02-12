@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 
-const customerSchema = new Schema({
-  email: {
-    type: String,
-    required: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
+// const customerSchema = new Schema({
+//   email: {
+//     type: String,
+//     required: true
+//   },
+//   password: {
+//     type: String,
+//     required: true
+//   }
+// });
 
-module.exports = mongoose.model('Customer', customerSchema);
+// module.exports = mongoose.model('Customer', customerSchema);
