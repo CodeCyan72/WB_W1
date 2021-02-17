@@ -11,17 +11,19 @@
  * IMPORTANT: Make sure to run "npm install" in your root before "npm start"
  *******************************************************************************/
 // Our initial setup (package requires, port number setup)
-const express = require('express');
-const session = require('express-session')
+const express = require('express');         //Allows for .js
+const session = require('express-session')  //Allows for session to be tracked
 
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');  //Helps with parsing errors
 const path = require('path');
-const mongoose = require('mongoose');
-const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
-const csrf = require('csurf');    //Help prevent stolen sessions
+const mongoose = require('mongoose'); 
+const PORT = process.env.PORT || 5000       // So we can run on heroku || (OR) localhost:5000
+const csrf = require('csurf');              //Help prevent stolen sessions
 const User = require('./models/user');
-// const Customer = require('./models/customer');
 const app = express();
+
+//Set up env variables
+require('dotenv').config()
 
 const flash = require('connect-flash');
 
@@ -32,18 +34,7 @@ const store = new MongoDBStore({
   collection: 'sessions'
 });
 
-// const mongoConnect = require('./util/database').mongoConnect;
-
 const csrfProtection = csrf();
-
-app.use((req, res, next) => {
-  User.findById('6018b37b62eced21198652e6')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
 
 
 // Route setup. You can implement more in the future!
@@ -65,8 +56,10 @@ app.use(express.static(path.join(__dirname, 'public')))
   .set('view engine', 'ejs')                     // Allows us to ommit .ejs in res.render
   .use(bodyParser.urlencoded({ extended: false })) // For parsing the body of a POST
   .use(session({ secret: "thisIsAPassword", resave: false, saveUninitialized: false, store: store}))
-  .use(csrfProtection)
-  .use((req, res, next) => {
+  .use(csrfProtection);
+
+  
+app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
     next();
