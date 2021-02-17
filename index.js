@@ -47,6 +47,7 @@ const prove02Routes = require('./routes/prove02');
 const week05 = require('./routes/w05Class');
 const ta = require('./routes/ta');
 const authRoutes = require('./routes/auth');
+const errorController = require('./controllers/error');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -58,24 +59,34 @@ app.use(express.static(path.join(__dirname, 'public')))
   .use(session({ secret: "thisIsAPassword", resave: false, saveUninitialized: false, store: store}))
   .use(csrfProtection);
 
-  
+//Session tracking
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
     next();
-  })
-  .use(flash())
+  });
+
+//Flash errors
+app.use(flash())
   .use((req, res, next) => {
     if (!req.session.user) {
       return next();
     }
     User.findById(req.session.user._id)
       .then(user => {
+        if (!user) {
+          return next();
+        }
         req.user = user;
         next();
       })
-      .catch(err => console.log(err));
-  })
+      .catch(err => {
+        throw new Error(err);
+      });
+  });
+
+//Routing
+app
   .use('/ta01', ta01Routes)
   .use('/ta02', ta02Routes)
   .use('/ta03', ta03Routes)
@@ -86,6 +97,10 @@ app.use((req, res, next) => {
   .use('/classActivities/05', week05)
   .use('/ta', ta)
   .use('/auth', authRoutes)
+  .get('/500', errorController.get500)
+  .use((error, req, res, next) => {
+    res.redirect('/500');
+  })
   .get('/', (req, res, next) => {
     // This is the primary index, always handled last. 
     res.render('pages/index', { title: 'Welcome to my CSE341 repo', path: '/' });
@@ -97,21 +112,9 @@ app.use((req, res, next) => {
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-
+//Connect the Database
 mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test?retryWrites=true&w=majority')
   .then(result => {
-    // User.findOne().then(user => {
-    //   if (!user) {
-    //     const user = new User({
-    //       name: 'Paul',
-    //       email: 'paul@shop.com',
-    //       cart: {
-    //         items: []
-    //       }
-    //     });
-    //     user.save();
-    //   }
-    // });
     app.listen(3000);
   }).catch(err => {
     console.log(err);
