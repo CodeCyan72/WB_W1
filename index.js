@@ -44,6 +44,7 @@ const ta03Routes = require('./routes/ta03');
 const ta04Routes = require('./routes/ta04');
 const prove01Routes = require('./routes/prove01');
 const prove02Routes = require('./routes/prove02');
+const prove08Routes = require('./routes/prove08');
 const week05 = require('./routes/w05Class');
 const ta = require('./routes/ta');
 const authRoutes = require('./routes/auth');
@@ -93,6 +94,7 @@ app
   .use('/ta04', ta04Routes)
   .use('/prove01', prove01Routes)
   .use('/prove02', prove02Routes)
+  .use('/prove08', prove08Routes)
   .use('/admin', adminRoutes)
   .use('/classActivities/05', week05)
   .use('/ta', ta)

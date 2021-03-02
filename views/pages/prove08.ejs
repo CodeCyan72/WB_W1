@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>This the Team Activity 03</p>
+    <form action="/ta03" method="POST">
+      <select name="page" id="" style="color: black;">
+        <% for (let i=0; i<numPages; i++) { %> 
+          <option value="<%= i+1 %>"><%= i+1 %></option>
+        <% } %>
+      </select>
+      <button class="btn" style="color: black;" type="submit">Go to page number</button>
+    </form>
+  </div>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;">
+    <% for (item of items) { %>
+      <div style="width: 350px; border: 1px solid white;" >
+        <img style="max-width: 300px;" src="<%= item.imageUrl %>" alt="<%= item.name %>">
+        <h3><%= item.name %></h3>
+        <h3>$<%= item.price %></h3>
+        <p><%= item.description %></p>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+</body>
+</html>
