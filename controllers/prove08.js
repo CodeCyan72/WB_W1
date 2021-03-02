@@ -26,7 +26,7 @@ exports.get08 = ('/',(req, res, next) => {
 
 exports.post08 = ('/',(req, res, next) => {
     // let value = req.body.category;
-    // const result = items.filter(item => item.tags.includes(value));
+    // const result = items.filter(item => item.tags.includes(value)); 
 
     res.render('pages/prove08', { 
         title: 'Prove Assignment 08', 
