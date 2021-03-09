@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>This is prove assignment 09</p>
+  </div>
+  <div>
+    <ul id="pokelist">
+
+    </ul>
+    <button class="btn" style="color:black;" onclick="backPage()">BACK</button>
+    <button class="btn" style="color:black;" onclick="nextPage()">NEXT</button>
+  </div>
+</div>
+
+<script src="/js/pokeAPI.js"></script>
+</body>
+</html>
