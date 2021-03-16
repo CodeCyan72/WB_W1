@@ -59,6 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))   // All renders start from the views folder
   .set('view engine', 'ejs')                     // Allows us to ommit .ejs in res.render
   .use(bodyParser.urlencoded({ extended: false })) // For parsing the body of a POST
+  .use(bodyParser.json())
   .use(session({ secret: "thisIsAPassword", resave: false, saveUninitialized: false, store: store}))
   .use(csrfProtection);
 
@@ -105,6 +106,7 @@ app
   .use('/auth', authRoutes)
   .get('/500', errorController.get500)
   .use((error, req, res, next) => {
+    console.log(error);
     res.redirect('/500');
   })
   .get('/', (req, res, next) => {

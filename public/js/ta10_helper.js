@@ -1,6 +1,7 @@
-// const { header } = require("express-validator");
+// const { response } = require("express");
 
-// var fetch = require('node-fetch');
+const _csrf = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
 var myCharacterList = document.getElementById("myCharacterList");
 
 //Default value of url is ""
@@ -14,17 +15,20 @@ const getCharacters = async (url = 'prove10/fetchAll') => {
 }
 
 //Default value of url is ""
-const addCharacter = async (value = {}, url = '/prove10/insert') => {
+const addCharacter = (value = "", url = '/prove10/insert') => {
     console.log("Making post request");
-    const myData = await fetch(url, {
+    return fetch(url, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(value)
+        body: JSON.stringify({ _csrf, name: value })
+    }).then(response => {
+        return response.json();
+    })
+    .then(val => {
+        updateData()
     });
-    
-    return myData.json();
 }
 
 
@@ -35,7 +39,7 @@ var globalJSON = "";
 
 
 function updateData(){
-    data.then(json => {
+    getCharacters().then(json => {
         //clear the list
         myCharacterList.innerHTML = "";
 
@@ -55,15 +59,5 @@ updateData()
 function addNewCharacter(){
     const name = document.getElementById("character").value;
 
-    const data = addCharacter({name: name})
-
-    data.then(response => {
-        if (response.status == 200) {
-            updateData()
-        }
-        else
-        {
-            //nothing
-        }
-    })
+    addCharacter(name);
 }

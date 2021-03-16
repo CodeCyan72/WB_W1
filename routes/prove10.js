@@ -25,6 +25,10 @@ router.post('/insert', (req, res, next) => {
         if (dummyData.avengers.find(el=>el.name===name)===undefined){
             //make it
             dummyData.avengers.push({ name: name });
+            res.status(200).send({name: name});
+        }
+        else{
+            res.sendStatus(400);
         }
     }
     else
