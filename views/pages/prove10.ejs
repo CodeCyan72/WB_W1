@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>This is prove assignment 09</p>
+  </div>
+  <div>
+    <ul id="myCharacterList">
+    </ul>
+  </div>
+  <div>
+    <input type="text" style="color: black;" name="character" id="character">
+    <button type="button" class="btn" style="color: black;" id="submit" onclick="addNewCharacter()">Submit</button>     
+  </div>
+</div>
+
+<script src="/js/ta10_helper.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+const express = require('express');
+const router = express.Router();
+
+// Path to your JSON file, although it can be hardcoded in this file.
+const dummyData = require('../data/ta10-data.json')
+
+router.get('/', (req, res, next) => {
+    res.render('pages/prove10', {
+        title: 'Team Activity 10',
+        path: '/teamActivities/10',
+    });
+});
+
+router.get('/fetchAll', (req, res, next) => {
+    res.json(dummyData);
+});
+
+router.post('/insert', (req, res, next) => {
+/************************************************
+ * INSERT YOUR WEB ENDPOINT CODE HERE
+ ************************************************/
+    if (req.body.name != undefined) {
+        const name = req.body.name;
+
+        if (dummyData.avengers.find(el=>el.name===name)===undefined){
+            //make it
+            dummyData.avengers.push({ name: name });
+        }
+    }
+    else
+    {
+        res.sendStatus(400);
+    }
+});
+
+module.exports = router;
