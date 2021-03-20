@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+  <meta name="_csrf" content="<%= csrfToken %>">
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>This is prove assignment 11</p>
+  </div>
+  <div>
+    <ul id="myCharacterList">
+      <% for (const name of names) { %>
+        <li id="<%= name.name %>">
+            <%= name.name %>
+        </li>
+        <% } %>
+    </ul>
+  </div>
+  <div>
+    <input type="text" style="color: black;" name="character" id="character">
+    <button type="button" class="btn" style="color: black;" id="submit" onclick="addNewCharacter()">Submit</button>     
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/ta11_helper.js"></script>
+</body>
+</html>

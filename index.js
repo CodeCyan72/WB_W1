@@ -47,6 +47,7 @@ const prove02Routes = require('./routes/prove02');
 const prove08Routes = require('./routes/prove08');
 const prove09Routes = require('./routes/prove09');
 const prove10Routes = require('./routes/prove10');
+const prove11Routes = require('./routes/prove11');
 const week05 = require('./routes/w05Class');
 const ta = require('./routes/ta');
 const authRoutes = require('./routes/auth');
@@ -100,6 +101,7 @@ app
   .use('/prove08', prove08Routes)
   .use('/prove09', prove09Routes)
   .use('/prove10', prove10Routes)
+  .use('/prove11', prove11Routes)
   .use('/admin', adminRoutes)
   .use('/classActivities/05', week05)
   .use('/ta', ta)
@@ -117,8 +119,9 @@ app
   .use((req, res, next) => {
     // 404 page
     res.render('pages/404', { title: '404 - Page Not Found', path: req.url })
-  })
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  });
+
+  const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 //Connect the Database
 mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mongodb.net/test?retryWrites=true&w=majority')
@@ -127,3 +130,25 @@ mongoose.connect('mongodb+srv://Heroku_User:7q0dTVkK80Q2tWjm@cluster0.qceaq.mong
   }).catch(err => {
     console.log(err);
   });
+
+
+  // Path to your JSON file, although it can be hardcoded in this file.
+  const dummyData = require('./data/ta10-data.json')
+  
+  //For prove11
+  const io = require('socket.io')(server);
+  
+  // Listen for new connections
+  io.on('connection', socket => {
+      console.log('Client connected!')
+      socket.on('disconnect', () => {
+          console.log('Client disconnected!')
+      })
+  
+      // Listen for add events
+      socket.on('add', name => {
+          // Add a name and tell clients to remove a name
+          dummyData.avengers.push({ name: name });
+          io.emit('add', name);
+      })
+  })
